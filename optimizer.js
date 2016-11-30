@@ -1,10 +1,82 @@
+function ultimateOptimizer(mat, max){
+  // #loop while there is a negative value at the last row
+  while(hasNegative(mat[mat.length-1])){
+    // #get pivot column by getting column with the biggest magnitude in the last row
+    var tempColIndex = getMostNegative(mat[mat.length-1]);
+    // alert(tempColIndex);
+    // #get pivot row by comparing test ratios
+    var tempRowIndex = getPivotElementIndex(mat, tempColIndex);
+    // alert(tempRowIndex);
+
+    // #normalize pivot row
+    // mat[tempRowIndex,] <- (mat[tempRowIndex,]/mat[tempRowIndex,tempColIndex])
+    alert("hehe " + tempRowIndex + " " + tempColIndex + " " + mat[tempRowIndex][tempColIndex]);
+    var normalizer = mat[tempRowIndex][tempColIndex];
+    for(i = 0 ; i < mat[tempRowIndex].length ; i++){
+      mat[tempRowIndex][i] = mat[tempRowIndex][i] / normalizer;
+    }
+
+    alert("normalized row is " + mat[tempRowIndex]);
+
+    // #eliminate values in the same column except pivot row where it will be 1
+    for(i = 0; i < mat.length; i++){
+      if(i != tempRowIndex){
+        if(mat[i][tempColIndex]!=0){
+          var tempArray = new Array(mat[0].length);
+          for(j = 0 ; j < mat[0].length ; j++) tempArray[j] = mat[i][tempColIndex] * mat[tempRowIndex][j];
+          for(j = 0 ; j < mat[0].length ; j++) mat[i][j] = mat[i][j] - tempArray[j];
+        }
+      }
+    }//close for
+    alert(mat);
+    // break;
+  }//close while
+  // alert("haller " + mat[0][0]);
+}
+
+
+function hasNegative(arr){
+  for(i = 0 ; i < arr.length ; i++){
+    if(arr[i] < 0) return true;
+  }
+  return false;
+}
+
+function getMostNegative(arr){
+  var tempMin = 0;
+  var tempMinIndex = 0;
+  for(i = 0 ; i < arr.length ; i++){
+    if(arr[i] < tempMin){
+      tempMin = arr[i];
+      tempMinIndex = i;
+    }
+  }
+  return tempMinIndex;
+}
+
+function getPivotElementIndex(mat, colIndex){
+  tempIndex = -1;
+  tempMin = 0;
+
+  for(i = 0 ; i < (mat.length-1) ; i++){
+    if(mat[0][colIndex] == 0) continue;
+    if((mat[i][mat[0].length-1] / mat[i][colIndex]) <= 0) continue;
+
+    if(tempIndex == -1 || (mat[i][mat[0].length-1] / mat[i][colIndex]) < tempMin){
+      tempMin = mat[i][mat[0].length-1] / mat[i][colIndex];
+      tempIndex = i;
+    }
+  }
+  return tempIndex;
+}
+
+
 function dietOptimizer(){
   alert("diet optimizer invoked");
-
   var items = [
     ["Frozen Broccoli", 0.16, 10, 73.8, 0, 0.8, 68.2, 13.6, 8.5, 8, 5867.4, 160.2, 159, 2.3],
     ["Carrots, Raw", 0.07, 0.5, 23.7, 0, 0.1, 19.2, 5.6, 1.6, 0.6, 15471, 5.1, 14.9, 0.3],
-    ["Celery Raw", 0.04, 1, 6.4, 0, 0.1, 34.8, 1.5, 0.7, 0.3, 53.6, 2.8, 16, 0.2],
+    ["Celery, Raw", 0.04, 1, 6.4, 0, 0.1, 34.8, 1.5, 0.7, 0.3, 53.6, 2.8, 16, 0.2],
     ["Frozen Corn", 0.18, 0.5, 72.2, 0, 0.6, 2.5, 17.1, 2, 2.5, 106.6, 5.2, 3.3, 0.3],
     ["Lettuce, Iceberg, Raw", 0.02, 1, 2.6, 0, 0, 1.8, 0.4, 0.3, 0.2, 66, 0.8, 3.8, 0.1],
     ["Peppers, Sweet, Raw", 0.53, 1, 20, 0, 0.1, 1.5, 4.8, 1.3, 0.7, 467.7, 66.1, 6.7, 0.3],
@@ -71,17 +143,25 @@ function dietOptimizer(){
     ["Beanbacn Soup, W/ Watr",0.67, 1, 172, 2.5, 5.9, 951.3, 22.8, 8.6, 7.9, 888, 1.5, 81, 2]
   ];//close item
 
-
-  for(i = 0 ; i < items.length ; i+=1){
-    if(items[i].length != 14)
-    alert(items[i][0]);
-  }
-
-
-
-
   var checkedValues = $('input:checkbox:checked').map(function() {
     return this.value;
   }).get();
-  alert(checkedValues);
-}
+  // alert(checkedValues);
+
+  for(iterator = 0, i = 0 ; i < items.length ; i+=1){
+    if(items[i][0] == checkedValues[iterator]){
+      // alert("i found " + items[i][0]);
+      iterator++;
+    }
+  }
+  var charot = [
+    [7,11,1,0,0,0,0,77],
+    [10,8,0,1,0,0,0,80],
+    [1,0,0,0,1,0,0,9],
+    [0,1,0,0,0,1,0,6],
+    [-150,-175,0,0,0,0,1,0]
+  ];
+
+
+  ultimateOptimizer(charot);
+}//close dietOptimizer
