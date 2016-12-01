@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Diet Optimizer </title>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+
+    </style>
+  </head>
+
+  <body>
+  <div class="navbar-fixed">
+    <nav class="teal">
+      <div class="nav-wrapper container">
+        <a href="#!" class="brand-logo">&nbsp;Diet Optimizer</a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="index2.html"><i class="large material-icons">shuffle</i></a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <form action="" onsubmit="dietOptimizer()" name="foodInput" class="container">
+    <table class="striped">
+      <tr>
+        <td><input type="checkbox" name="food" class="filled-in" id="fb" value="Frozen Broccoli"/><label for="fb">Frozen Broccoli</label></label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="car" value="Carrots, Raw"/><label for="car">Carrots, Raw</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="cer" value="Celery, Raw"/><label for="cer">Celery, Raw</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="fc" value="Frozen Corn"/><label for="fc">Frozen Corn</label></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="food" class="filled-in" id="lir" value="Lettuce, Iceberg, Raw"/><label for="lir">Lettuce, Iceberg, Raw</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="psr" value="Pepper, Sweer, Raw"/><label for="psr">Peppers, Sweer, Raw</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="pob" value="Potatoes, Baked"/><label for="pob">Potatoes, Baked</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="tf" value="Tofu"/><label for="tf">Tofu </label></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="food" class="filled-in" id="rc" value="Roast Chicken"/><label for="rc">Roast Chicken</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="sws" value="Spaghetti W/ Sauce"/><label for="sws">Spaghetti W/ Sauce</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="trrr" value="Tomato, Red, Ripe, Raw"/><label for="trrr">Tomato, Red, Ripe, Raw</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="arws" value="Apple, Raw, W/ Skin"/><label for="arws">Apple, Raw, W/ Skin</label></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="food" class="filled-in" id="b" value="Banana"/><label for="b">Banana</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="g" value="Grapes"/><label for="g">Grapes</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="krf" value="Kiwifruit, Raw, Fresh"/><label for="krf">Kiwifruit, Raw, Fresh</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="o" value="Oranges"/><label for="o">Oranges</label></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="food" class="filled-in" id="bag" value="Bagels"/><label for="bag">Bagels</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="web" value="Wheat Bread"/><label for="web">Wheat Bread</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="wib" value="White Bread"/><label for="wib">White Bread</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="oc" value="Oatmeal Cookies"/><label for="oc">Oatmeal Cookies</label></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="food" class="filled-in" id="ap" value="Apple Pie"/><label for="ap">Apple Pie</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="cp" value="Chocolate Chip Cookies"/><label for="cp">Chocolate Chip Cookies</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="br" value="Butter, Regular"/><label for="br">Butter, Regular</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="cc" value="Cheddar Cheese"/><label for="cc">Cheddar Cheese</label></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="food" class="filled-in" id="fwm" value="3.3% Fat, Whole Milk"/><label for="fwm">3.3% Fat, Whole Milk</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="lfm" value="2% Low-Fat Milk"/><label for="lfm">2% Low-fat Milk</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="sm" value="Skim Milk"/><label for="sm">Skim Milk</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="pe" value="Poached Eggs"/><label for="pe">Poached Eggs</label></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="food" class="filled-in" id="se" value="Scrambled Eggs"/><label for="se">Scrambled Eggs</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="bt" value="Balogna, Turkey"/><label for="bt">Balogna, Turkey</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="frb" value="Frankfurter, Beef"/><label for="frb">Frankfurter, Beef</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="hse" value="Ham, Sliced, Extralean"/><label for="hse">Ham, Sliced, Extralean</label></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="food" class="filled-in" id="kp" value="Kielbasa, prk"/><label for="kp">Kielbasa, prk</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="cnc" value="Cap'N Crunch"/><label for="cnc">Cap'N Crunch</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="c" value="Cheerios"/><label for="c">Cheerios</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="cfk" value="Corn Flks, Kellog's"/><label for="cfk">Corn Flks, Kellogg'S</label></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="food" class="filled-in" id="rbk" value="Raisin Brn, Kell'S"/><label for="rbk">Raisin Brn, Kell'S</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="rk" value="Rice Krispies"/><label for="rk">Rice Krispies</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="sk" value="Special K"/><label for="sk">Special K</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="om" value="Oatmeal"/><label for="om">Oatmeal</label></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="food" class="filled-in" id="mom" value="Malt-O-Meal, Choc"/><label for="mom">Malt-O-Meal, Choc</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="pwp" value="Pizza W/ Pepperoni"/><label for="pwp">Pizza W/ Pepperoni</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="t" value="Taco"/><label for="t">Taco</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="hwt" value="Hamburger W/ Toppings"/><label for="hwt">Hamburger W/ Toppings</label></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="food" class="filled-in" id="hp" value="Hotdog, Plain"/><label for="hp">Hotdog,Plain</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="csc" value="Couscous"/><label for="csc">Couscous</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="wr" value="White Rice"/><label for="wr">White Rice</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="mc" value="Macaroni, Ckd"/><label for="mc">Macaroni, Ckd</label></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="food" class="filled-in" id="pb" value="Peanut Butter"/><label for="pb">Peanut Butter</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="p" value="Pork"/><label for="p">Pork</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="sio" value="Sardine in Oil"/><label for="sio">Sardine in Oil</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="wtiw" value="White Tuna in Water"/><label for="wtiw">White Tuna in Water</label></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="food" class="filled-in" id="pap" value="Popcorn, Ait-Popped"/><label for="pap">Popcorn, Air-Popped</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="pcb" value="Potato Chips, Bbqflavr"/><label for="pcb">Potato Chips, Bbqflavr</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="pzl" value="Pretzels"/><label for="pzl">Pretzels</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="tc" value="Tortilla Chip"/><label for="tc">Tortilla Chip</label></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="food" class="filled-in" id="cs" value="Chicknoodl Soup"/><label for="cs">Chicknoodl Soup</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="sph" value="Splt Pea&Hamsoup"/><label for="sph">Splt Pea&Hamsoup</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="vs" value="Vegebeef Soup"/><label for="vs">Vegetbeef Soup</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="nc" value="Neweng Clamchwd"/><label for="nc">Neweng Clamchwd</label></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="food" class="filled-in" id="ts" value="Tomato Soup"/><label for="ts">Tomato Soup</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="necwm" value="New E Clamchwd, W/ Mlk"/><label for="necwm">New E Clamchwd, W/ Mlk</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="cmswm" value="Crm Mshrm Soup, W/ Mlk"/><label for="cmswm">Crm Mshrm Soup, W/ Mlk</label></td>
+        <td><input type="checkbox" name="food" class="filled-in" id="bsww" value="Beanbacn Soup, W/ Watr"/><label for="bsww">Beanbacn Soup, W/ Watr</label></td>
+      </tr>
+      </table>
+
+      <button class="btn waves-effect waves-light" type="submit" name="action">
+        Submit
+        <i class="material-icons right">send</i>
+      </button>
+  </form>
+
+  <!--Import jQuery before materialize.js-->
+  <script type="text/javascript" src="optimizer.js"></script>
+  <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+  <script type="text/javascript" src="js/materialize.min.js"></script>
+  </body>
+
+
+
+</html>

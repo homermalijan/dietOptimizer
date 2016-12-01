@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Diet Optimizer </title>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+
+  <body>
+  <div class="navbar-fixed">
+    <nav class="teal">
+      <div class="nav-wrapper container">
+        <a href="#!" class="brand-logo">&nbsp;Ultimate Optimizer</a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="index1.html"><i class="large material-icons">shuffle</i></a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <form action="" onsubmit="dietOptimizer()" name="functionInput" class="container" id="temp">
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="mainFunction" type="text" class="validate">
+          <label for="mainFunction">Objective Function</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input type="text" class="constraint"/>
+          <label for="constraint">Constraint Function</label>
+        </div>
+      </div>
+    </div>
+    </form>
+    <div class="fixed-action-btn">
+      <a onClick="newRow()" class="btn-floating btn-large red">
+        <i class="large material-icons">add</i>
+      </a>
+
+    </div>
+    <div style="text-align:center">
+      <button onClick="minimize()" class="btn waves-effect waves-light center" type="button" name="action">
+        Minimize
+        <i class="material-icons right">call_received</i>
+      </button>
+      <button onClick="maximize()" class="btn waves-effect waves-light center" type="button" name="action">
+        Maximize
+        <i class="material-icons right">call_made</i>
+      </button>
+    </div>
+  </form>
+
+  <!--Import jQuery before materialize.js-->
+  <script type="text/javascript" src="optimizer.js"></script>
+  <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+  <script type="text/javascript" src="js/materialize.min.js"></script>
+  </body>
+
+
+
+</html>

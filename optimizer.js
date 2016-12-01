@@ -1,24 +1,22 @@
-function ultimateOptimizer(mat, max){
-  // #loop while there is a negative value at the last row
+//Homer Malijan
+//2013-09022
+//=========================================================================================================
+//=========================================================================================================
+function ultimateOptimizer(mat, variables, verbose){
+  // loop while there is a negative value at the last row
   while(hasNegative(mat[mat.length-1])){
-    // #get pivot column by getting column with the biggest magnitude in the last row
+    // get pivot column by getting column with the biggest magnitude in the last row
     var tempColIndex = getMostNegative(mat[mat.length-1]);
-    // alert(tempColIndex);
-    // #get pivot row by comparing test ratios
+    // get pivot row by comparing test ratios
     var tempRowIndex = getPivotElementIndex(mat, tempColIndex);
-    // alert(tempRowIndex);
 
-    // #normalize pivot row
-    // mat[tempRowIndex,] <- (mat[tempRowIndex,]/mat[tempRowIndex,tempColIndex])
-    alert("hehe " + tempRowIndex + " " + tempColIndex + " " + mat[tempRowIndex][tempColIndex]);
+    // normalize pivot row
     var normalizer = mat[tempRowIndex][tempColIndex];
     for(i = 0 ; i < mat[tempRowIndex].length ; i++){
       mat[tempRowIndex][i] = mat[tempRowIndex][i] / normalizer;
     }
 
-    alert("normalized row is " + mat[tempRowIndex]);
-
-    // #eliminate values in the same column except pivot row where it will be 1
+    // eliminate values in the same column except pivot row where it will be 1
     for(i = 0; i < mat.length; i++){
       if(i != tempRowIndex){
         if(mat[i][tempColIndex]!=0){
@@ -28,13 +26,23 @@ function ultimateOptimizer(mat, max){
         }
       }
     }//close for
-    alert(mat);
-    // break;
+
+    if(verbose == 1){
+      var res = new Array();
+      res.push(variables);
+      for(i = 0 ; i < mat.length ; i++){
+        res.push(mat[i]);
+      }
+      createTable(res);
+    }
   }//close while
-  // alert("haller " + mat[0][0]);
-}
 
 
+  return mat;
+
+}//close ultimateOptimizer
+//=========================================================================================================
+//=========================================================================================================
 function hasNegative(arr){
   for(i = 0 ; i < arr.length ; i++){
     if(arr[i] < 0) return true;
@@ -69,8 +77,8 @@ function getPivotElementIndex(mat, colIndex){
   }
   return tempIndex;
 }
-
-
+//=========================================================================================================
+//=========================================================================================================
 function dietOptimizer(){
   alert("diet optimizer invoked");
   var items = [
@@ -162,6 +170,267 @@ function dietOptimizer(){
     [-150,-175,0,0,0,0,1,0]
   ];
 
-
   ultimateOptimizer(charot);
 }//close dietOptimizer
+//=========================================================================================================
+//=========================================================================================================
+function minimize(){
+  var enteredValues = $('input:text').map(function() {
+    return this.value;
+  }).get();
+  alert(enteredValues);
+  var variables = new Array();
+
+  //take variables from objective function
+  var objective = enteredValues[0].split(' = ');
+  var inputCount = enteredValues.length;
+  temp2 = objective[1].split(" + ");
+
+  for(i = 0 ; i < temp2.length ; i++){
+    var tempVar = temp2[i].match(/[a-z]/i);
+    var temp = temp2[i].split(tempVar);
+    if(temp[1] === undefined) variables.push(tempVar);
+    else variables.push(tempVar+""+temp[1]);
+  }
+
+  variables.push("solution");
+  var table = makeArray(enteredValues.length, variables.length, 0);
+
+  alert("variables: " + variables);
+  //add values of constraints
+  for(i = 1; i < enteredValues.length ; i++){
+    var tempEquality = 0;
+    var temp;
+    var ind;
+
+    //split
+    if(enteredValues[i].indexOf('>=') >= 0) temp = enteredValues[i].split(' >= ');
+    else if(enteredValues[i].indexOf('<=') >= 0) temp = enteredValues[i].split(' <= ');
+    else if(enteredValues[i].indexOf('>') >= 0) temp = enteredValues[i].split(' > ');
+    else if(enteredValues[i].indexOf('<=') >= 0) temp = enteredValues[i].split(' < ');
+    else{
+      tempEquality = 1;
+      temp = enteredValues[i].split(' = ');
+    }
+
+    //solution column
+    table[i-1][variables.length-1] = parseFloat(temp[1]);
+    alert("solution is: " + temp[1]);
+    //variables columns
+    var temp2 = temp[0].split(" + ");
+    for(j = 0 ; j < temp2.length ; j++){
+      var tempVar = temp2[j].match(/[a-z]/i);
+      var tempTerm = temp2[j].split(tempVar);
+
+      if(tempTerm[1] === undefined) ind = variables.indexOf(tempVar);
+      else ind = variables.indexOf(tempVar+""+tempTerm[1]);
+      table[i-1][ind] = parseFloat(tempTerm[0]);
+    }
+  }
+
+  //add objective function
+  var ind;
+  var objective = enteredValues[0].split(' = ');
+  temp2 = objective[1].split(" + ");
+
+  for(i = 0 ; i < temp2.length ; i++){
+    var tempVar = temp2[i].match(/[a-z]/i);
+    var temp = temp2[i].split(tempVar);
+
+    if(temp[1] === undefined) ind = variables.indexOf(tempVar);
+    else ind = variables.indexOf(tempVar+""+temp[1]);
+
+    table[enteredValues.length-1][ind] = parseFloat(temp[0]);
+  }
+
+  var transTable = transpose(table);
+
+  alert(table);
+  alert(transTable);
+
+  //negate if necessary
+  for(i = 0 ; i < enteredValues.length ; i++){
+      if(i==enteredValues.length-1){
+        for(j = 0 ; j < transTable[i].length ; j++) transTable[i][j] = transTable[i][j]*-1;
+        break;
+      }
+      if(enteredValues[i].indexOf('<=') >= 0){
+        for(j = 0 ; j < transTable[i].length ; j++) transTable[i][j] = transTable[i][j]*-1;
+      }
+  }
+
+  alert(transTable);
+
+  //add slack variables
+  var newTable = makeArray(transTable.length, ((transTable[0].length) + (enteredValues.length-1)), 0);
+
+  //store prev values and new slack variables
+  for(i = 0 ; i < newTable.length ; i++){
+    for(j = 0 ; j < newTable[i].length ; j++){
+      if(j<(transTable.length-1)) newTable[i][j] = transTable[i][j];
+      else if(j==(newTable[i].length-1)) newTable[i][j] = transTable[i][transTable.length-1];
+      else if(j==((transTable.length-1)+i)) newTable[i][j] = 1;
+    }
+  }
+
+  alert(newTable)
+  var holder = variables.pop();
+  for(i = 0 ; i < enteredValues.length-1 ; i++) variables.push("s"+(i+1));
+  variables.push(holder);
+
+  alert(variables);
+  ultimateOptimizer(newTable, variables, 1);
+}//close minimize
+//=======================================================================================================
+//=======================================================================================================
+function maximize(){
+
+  var enteredValues = $('input:text').map(function() {
+    return this.value;
+  }).get();
+  alert(enteredValues);
+  var variables = new Array();
+
+  //take variables from objective function
+  var objective = enteredValues[0].split(' = ');
+  var inputCount = enteredValues.length;
+  temp2 = objective[1].split(" + ");
+
+  for(i = 0 ; i < temp2.length ; i++){
+    var tempVar = temp2[i].match(/[a-z]/i);
+    var temp = temp2[i].split(tempVar);
+    if(temp[1] === undefined) variables.push(tempVar);
+    else variables.push(tempVar+""+temp[1]);
+  }
+
+  //add slack variables
+  for(i = 1 ; i < (inputCount) ; i++){
+    if(enteredValues[i].indexOf('<') >= 0 || enteredValues[i].indexOf('>') >= 0)
+    variables.push("s" + i);
+  }
+
+  //add last variable of objective function
+  var temp2 = objective[0].match(/[a-z]/i);
+  if (temp2!=null) {
+    var temp = objective[0].split(temp2);
+    if(temp === undefined) variables.push(temp2);
+    else variables.push(temp2+""+temp[1]);
+  }
+
+  //add solution variable
+  variables.push("solution");
+  alert("variables: " + variables);
+
+  //create tablaeu
+  var table = makeArray(enteredValues.length, variables.length, 0);
+
+  //take values of constraints
+  for(i = 1; i < enteredValues.length ; i++){
+    var tempEquality = 0;
+    var temp;
+    var ind;
+    var negate=0;
+    //split
+    if(enteredValues[i].indexOf('<=') >= 0) temp = enteredValues[i].split(' <= ');
+    else if(enteredValues[i].indexOf('>=') >= 0){
+      temp = enteredValues[i].split(' >= ');
+      negate = 1;
+    }
+    else{
+      tempEquality = 1;
+      temp = enteredValues[i].split(' = ');
+    }
+
+    //solution column
+    if(negate == 1) table[i-1][variables.length-1] = (parseFloat(tempTerm[1])*-1);
+    else table[i-1][variables.length-1] = parseFloat(temp[1]);
+
+    //variables columns
+    var temp2 = temp[0].split(" + ");
+    for(j = 0 ; j < temp2.length ; j++){
+      var tempVar = temp2[j].match(/[a-z]/i);
+      var tempTerm = temp2[j].split(tempVar);
+
+      if(tempTerm[1] === undefined) ind = variables.indexOf(tempVar);
+      else ind = variables.indexOf(tempVar+""+tempTerm[1]);
+      if(negate == 1) table[i-1][ind] = (parseFloat(tempTerm[0])*-1);
+      else table[i-1][ind] = parseFloat(tempTerm[0]);
+    }
+    //slack columns
+    if(tempEquality == 0){
+      ind = variables.indexOf("s" + i);
+      table[i-1][ind] = 1;
+    }
+  }
+
+  //last row (objective function)
+  //objective vars
+  var ind;
+  var objective = enteredValues[0].split(' = ');
+  temp2 = objective[1].split(" + ");
+
+  for(i = 0 ; i < temp2.length ; i++){
+    var tempVar = temp2[i].match(/[a-z]/i);
+    var temp = temp2[i].split(tempVar);
+
+    if(temp[1] === undefined) ind = variables.indexOf(tempVar);
+    else ind = variables.indexOf(tempVar+""+temp[1]);
+
+    table[enteredValues.length-1][ind] = (parseFloat(temp[0])*-1);
+  }
+
+  //objective Z
+  var tempTerm = objective[0].match(/[a-z]/i);
+  var temp = objective[0].split(tempTerm);
+
+  if(temp[1] === undefined) ind = variables.indexOf(tempTerm);
+  else ind = variables.indexOf(tempTerm+""+temp[1]);
+
+  table[enteredValues.length-1][ind] = parseFloat(temp[0]);
+  alert(table);
+
+  var holder = ultimateOptimizer(table, variables, 1);
+}
+//=========================================================================================================
+//=========================================================================================================
+function makeArray(h, w, val) {
+  var arr = [];
+  for(var x = 0; x < h; x++){
+      arr[x] = [];
+      for(var y = 0; y < w; y++){
+          arr[x][y] = val;
+      }
+  }
+  return arr;
+}
+
+function createTable(tableData) {
+  var table = document.createElement('table');
+  var tableBody = document.createElement('tbody');
+
+  tableData.forEach(function(rowData) {
+    var row = document.createElement('tr');
+
+    rowData.forEach(function(cellData) {
+      var cell = document.createElement('td');
+      cell.appendChild(document.createTextNode(cellData));
+      row.appendChild(cell);
+    });
+
+    tableBody.appendChild(row);
+  });
+
+  table.appendChild(tableBody);
+  document.body.appendChild(table);
+}
+
+function transpose(a) {
+  return Object.keys(a[0]).map(
+    function (c) { return a.map(function (r) { return r[c]; }); }
+  );
+}//taken from : http://stackoverflow.com/questions/4492678/swap-rows-with-columns-transposition-of-a-matrix-in-javascript
+
+function newRow(){
+  $('#temp').append('<div class="row"><div class="input-field col s12"><input type="text" class="constraint"/><label for="constraint">Constraint Function</label></div></div>');
+  return true;
+}
